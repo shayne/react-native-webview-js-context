@@ -16,6 +16,7 @@ const GC_HTML = `
         google.setOnLoadCallback(resolve);
       </script>
     </head>
+    <body><div id="chart_div"></div></body>
   </html>`;
 
 const CHART_JS = `
@@ -32,9 +33,9 @@ const CHART_JS = `
   
   var options = {'title':'How Much Pizza I Ate Last Night',
                  'width':750,
-                 'height':600};
+                 'height':450};
                  
-  var chart = new google.visualization.PieChart(document.createElement('div'));
+  var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
   chart.draw(data, options);
   
   resolve(chart.getImageURI());`;
