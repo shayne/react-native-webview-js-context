@@ -1,0 +1,28 @@
+{
+  "name": "react-native-webview-js-context",
+  "version": "0.1.0",
+  "description": "Utilize the JavaScript VM running inside an iOS UIWebView to exploit libraries targeting the DOM (e.g. Google Charts).",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shayne/react-native-webview-js-context"
+  },
+  "bugs": {
+    "url": "https://github.com/shayne/react-native-webview-js-context/issues"
+  },
+  "homepage": {
+    "url": "https://github.com/shayne/react-native-webview-js-context#readme"
+  },
+  "keywords": [
+    "dom",
+    "web",
+    "jsc",
+    "react",
+    "react-native"
+  ],
+  "author": "Shayne Sweeney <shaynesweeney@me.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "react-native": "*"
+  }
+}
