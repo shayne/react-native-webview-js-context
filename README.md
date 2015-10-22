@@ -52,6 +52,10 @@ class RNCharts {
       });
   }
   
+  componentWillUnmount() {
+    this.ctx && this.ctx.destroy();
+  },
+  
   render() {
     return this.state.imageUri ?
       <Image style={{ width: 375, height: 300 }} source={{ uri: this.state.imageUri }} />
