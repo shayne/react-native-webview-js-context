@@ -18,7 +18,8 @@
     "web",
     "jsc",
     "react",
-    "react-native"
+    "react-native",
+    "react-component"
   ],
   "author": "Shayne Sweeney <shaynesweeney@me.com>",
   "license": "MIT",
