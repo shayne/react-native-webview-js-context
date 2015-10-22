@@ -12,7 +12,7 @@ const GC_HTML = `
   <head>
     <script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>
     <script type=\"text/javascript\">
-      google.load('visualization', '1.0', {'packages':['corechart', 'line']});
+      google.load('visualization', '1.0', {'packages':['corechart']});
       google.setOnLoadCallback(resolve);
     </script>
   </head>
@@ -42,9 +42,8 @@ const CHART_JS = `
 
 import WebViewJSContext from 'react-native-webview-js-context';
 
-class RNCharts extends React.Component {
+class RNCharts {
   state: { imageUri: null };
-  ctx: WebViewJSContext;
 
   componentWillMount() {
     WebViewJSContext.createWithHTML(GC_HTML)
@@ -67,7 +66,7 @@ class RNCharts extends React.Component {
 }
 ```
 
-## Getting started
+## Getting Started
 
 1. `npm install react-native-webview-js-context@latest --save`
 2. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
