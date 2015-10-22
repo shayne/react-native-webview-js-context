@@ -8,15 +8,15 @@ Interactive JavaScript between a UIWebView and React Native.
 
 ```javascript
 const GC_HTML = `
-<html>
-  <head>
-    <script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>
-    <script type=\"text/javascript\">
-      google.load('visualization', '1.0', {'packages':['corechart']});
-      google.setOnLoadCallback(resolve);
-    </script>
-  </head>
-</html>`;
+  <html>
+    <head>
+      <script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>
+      <script type=\"text/javascript\">
+        google.load('visualization', '1.0', {'packages':['corechart']});
+        google.setOnLoadCallback(resolve);
+      </script>
+    </head>
+  </html>`;
 
 const CHART_JS = `
   var data = new google.visualization.DataTable();
@@ -37,8 +37,7 @@ const CHART_JS = `
   var chart = new google.visualization.PieChart(document.createElement('div'));
   chart.draw(data, options);
   
-  resolve(chart.getImageURI());
-`;
+  resolve(chart.getImageURI());`;
 
 import WebViewJSContext from 'react-native-webview-js-context';
 
