@@ -4,7 +4,7 @@ Interactive JavaScript between a UIWebView and React Native.
 
 **Example:** Google Charts used to render a chart (base64 encoded image) in a `<Image />` component
 
-<img width="375" src="http://shayne.github.io/react-native-webview-js-context/readme-files/google-charts-screenshot.png?" />
+<img width="375" src="http://shayne.github.io/react-native-webview-js-context/readme-files/google-charts-screenshot.png?999" />
 
 ```javascript
 const GC_HTML = `
@@ -13,7 +13,7 @@ const GC_HTML = `
       <script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>
       <script type=\"text/javascript\">
         google.load('visualization', '1.0', {'packages':['corechart']});
-        google.setOnLoadCallback(resolve);
+        google.setOnLoadCallback(resolve); /* <--- resolve() is called by RNWebViewJSContext */
       </script>
     </head>
     <body><div id="chart_div"></div></body>
@@ -21,24 +21,39 @@ const GC_HTML = `
 
 const CHART_JS = `
   var data = new google.visualization.DataTable();
-  data.addColumn('string', 'Topping');
-  data.addColumn('number', 'Slices');
+  data.addColumn('date', 'Day');
+  data.addColumn('number', 'Weight');
+  data.addColumn({ type: 'string', role: 'annotation' });
   data.addRows([
-    ['Mushrooms', 3],
-    ['Onions', 1],
-    ['Olives', 1],
-    ['Zucchini', 1],
-    ['Pepperoni', 2]
+      [new Date(2015, 2, 1), 150, '150'],
+      [new Date(2015, 2, 2), 152, null],
+      [new Date(2015, 2, 3), 146, '146'],
+      [new Date(2015, 2, 4), 150, null],
+      [new Date(2015, 2, 5), 157, '157'],
+      [new Date(2015, 2, 06), 147, null],
+      [new Date(2015, 2, 07), 147.5, '147'],
   ]);
-  
-  var options = {'title':'How Much Pizza I Ate Last Night',
-                 'width':750,
-                 'height':450};
-                 
-  var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+
+  var options = { enableInteractivity: false,
+                  legend: {position: 'none'},
+                  lineWidth: 3, width:750, height:420,
+                  pointShape: 'circle', pointSize: 8,
+                  chartArea: { left: 30, width: 690 }, areaOpacity: 0.07,
+                  colors: ['#e14c4d'], backgroundColor: { 'fill': '#34343f' },
+                  annotations: {
+                    textStyle: { fontSize: 26, bold: true, color: '#bbbbbd', auroColor: '#3f3f3f' },
+                  },
+                  hAxis: {
+                    format: 'MMM d',
+                    textStyle: {color: '#bbbbbd', fontSize: 16,}, gridlines: { color: 'transparent' },
+                  },
+                  vAxis: { gridlines: { count: 3, color: '#3f414f' } },
+                };
+
+  var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
   chart.draw(data, options);
-  
-  resolve(chart.getImageURI());`;
+
+  resolve(chart.getImageURI()); /* <--- resolve() is called by RNWebViewJSContext */`;
 
 import WebViewJSContext from 'react-native-webview-js-context';
 
