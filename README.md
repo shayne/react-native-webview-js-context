@@ -4,7 +4,7 @@ Interactive JavaScript between a UIWebView and React Native.
 
 **Example:** Google Charts used to render a chart (base64 encoded image) in a `<Image />` component
 
-<img width="375" src="http://shayne.github.io/react-native-webview-js-context/readme-files/google-charts-screenshot.png" />
+<img width="375" src="http://shayne.github.io/react-native-webview-js-context/readme-files/google-charts-screenshot.png?" />
 
 ```javascript
 const GC_HTML = `
