@@ -51,8 +51,6 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(destroy:(nonnull NSNumber *)contextID)
 {
-    NSLog(@"WebView being destroyed: %p", self.webViews[contextID]);
-    NSLog(@"Context being destroyed: %p", [self.webViews[contextID] JSContext]);
     [self.webViews removeObjectForKey:contextID];
 }
 
