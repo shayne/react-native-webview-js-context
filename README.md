@@ -4,6 +4,8 @@ Interactive JavaScript between a UIWebView and React Native.
 
 **Example:** Google Charts used to render a chart (base64 encoded image) in a `<Image />` component
 
+<img width="375" src="http://shayne.github.io/react-native-webview-js-context/readme-files/google-charts-screenshot.png" />
+
 ```javascript
 const GC_HTML = `
 <html>
@@ -16,13 +18,37 @@ const GC_HTML = `
   </head>
 </html>`;
 
+const CHART_JS = `
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Topping');
+  data.addColumn('number', 'Slices');
+  data.addRows([
+    ['Mushrooms', 3],
+    ['Onions', 1],
+    ['Olives', 1],
+    ['Zucchini', 1],
+    ['Pepperoni', 2]
+  ]);
+  
+  var options = {'title':'How Much Pizza I Ate Last Night',
+                 'width':750,
+                 'height':600};
+                 
+  var chart = new google.visualization.PieChart(document.createElement('div'));
+  chart.draw(data, options);
+  
+  resolve(chart.getImageURI());
+`;
+
+import WebViewJSContext from 'react-native-webview-js-context';
+
 class RNCharts extends React.Component {
-  state: { imageUri: '' };
+  state: { imageUri: null };
   ctx: WebViewJSContext;
 
   componentWillMount() {
     WebViewJSContext.createWithHTML(GC_HTML)
-      .then((context) => {
+      .then(context => {
         this.ctx = context;
         this.loadChart();
       });
@@ -30,17 +56,16 @@ class RNCharts extends React.Component {
   
   render() {
     return this.state.imageUri ?
-      <Image style={{ width: 375, height 300 }} source={{ uri: this.state.imageUri }} />
-      <View />;
+      <Image style={{ width: 375, height: 300 }} source={{ uri: this.state.imageUri }} />
+      : <View />;
   }
   
   async loadChart() {
-    var imageUri = await this.ctx.evaluateScript(/* chart JS: see below for more info */);
+    var imageUri = await this.ctx.evaluateScript(CHART_JS);
     this.setState({ imageUri });
   }
 }
 ```
-<img width="375" src="http://shayne.github.io/react-native-webview-js-context/readme-files/google-charts-screenshot.png" />
 
 ## Getting started
 
