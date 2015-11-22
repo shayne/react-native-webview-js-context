@@ -85,6 +85,11 @@ RCT_EXPORT_METHOD(loadHTML:(NSString *)htmlString resolver:(RCTPromiseResolveBlo
     });
 }
 
+RCT_REMAP_METHOD(loadModule, loadModuleInContext:(nonnull NSNumber *)contextID script:(NSString *)script resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    
+}
+
 
 RCT_REMAP_METHOD(evaluateScript, evaluateScriptInContext:(nonnull NSNumber *)contextID script:(NSString *)script resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {

@@ -1,6 +1,6 @@
 {
   "name": "react-native-webview-js-context",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Utilize the JavaScript VM running inside an iOS UIWebView to exploit libraries targeting the DOM (e.g. Google Charts).",
   "main": "src/index.js",
   "repository": {
@@ -17,6 +17,8 @@
     "dom",
     "web",
     "jsc",
+    "ios",
+    "android",
     "react",
     "react-native",
     "react-component"

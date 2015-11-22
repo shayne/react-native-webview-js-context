@@ -67,17 +67,17 @@ class RNCharts {
         this.loadChart();
       });
   }
-  
+
   componentWillUnmount() {
     this.ctx && this.ctx.destroy();
   },
-  
+
   render() {
     return this.state.imageUri ?
       <Image style={{ width: 375, height: 300 }} source={{ uri: this.state.imageUri }} />
       : <View />;
   }
-  
+
   async loadChart() {
     var imageUri = await this.ctx.evaluateScript(CHART_JS);
     this.setState({ imageUri });
@@ -85,11 +85,69 @@ class RNCharts {
 }
 ```
 
-## Getting Started
+## Usage
 
-1. `npm install react-native-webview-js-context@latest --save`
-2. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-3. Go to `node_modules` ➜ `react-native-webview-js-context` and add `RNWebViewJSContext.xcodeproj`
-4. In XCode, in the project navigator, select your project. Add `libRNWebViewJSContext.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-5. Run your project (`Cmd+R`)
+First you need to install react-native-webview-js-context:
+
+```javascript
+npm install react-native-webview-js-context --save
+```
+
+
+## `iOS`
+
+1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
+2. Go to `node_modules` ➜ `react-native-webview-js-context` and add `RNWebViewJSContext.xcodeproj`
+3. In XCode, in the project navigator, select your project. Add `libRNWebViewJSContext.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
+4. Run your project (`Cmd+R`)
+
+### `Android`
+
+* `android/settings.gradle`
+
+```gradle
+...
+include ':react-native-webview-js-context'
+project(':react-native-webview-js-context').projectDir = new File(settingsDir, '../node_modules/react-native-webview-js-context/android')
+```
+* `android/app/build.gradle`
+
+```gradle
+dependencies {
+	...
+	compile project(':react-native-webview-js-context')
+}
+```
+
+* register module (in MainActivity.java)
+
+```java
+...
+
+import com.shaynesweeney.react_native_webview_js_context.RNWebViewJSContextPackage; // <--- IMPORT
+
+public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
+	...
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mReactRootView = new ReactRootView(this);
+
+        mReactInstanceManager = ReactInstanceManager.builder()
+                .setApplication(getApplication())
+                .setBundleAssetName("index.android.bundle")
+                .setJSMainModuleName("index.android")
+                .addPackage(new MainReactPackage())
+                .addPackage(new RNWebViewJSContextPackage()) // <- ADD HERE
+                .setUseDeveloperSupport(BuildConfig.DEBUG)
+                .setInitialLifecycleState(LifecycleState.RESUMED)
+                .build();
+
+        mReactRootView.startReactApplication(mReactInstanceManager, "YourProject", null);
+
+        setContentView(mReactRootView);
+    }
+}
+```
 
