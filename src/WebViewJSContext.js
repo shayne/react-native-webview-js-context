@@ -4,9 +4,7 @@
 
 var React = require('react-native');
 
-var { Platform } = React;
-
-var { RNWebViewJSContext } = require('NativeModules');
+var { Platform, NativeModules: { RNWebViewJSContext } } = React;
 
 export default class WebViewJSContext {
   ctx: any;
