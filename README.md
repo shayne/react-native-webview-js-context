@@ -10,8 +10,8 @@ Interactive JavaScript between a UIWebView and React Native.
 const GC_HTML = `
   <html>
     <head>
-      <script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>
-      <script type=\"text/javascript\">
+      <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+      <script type="text/javascript">
         google.load('visualization', '1.0', {'packages':['corechart']});
         google.setOnLoadCallback(resolve); /* <--- resolve() is called by RNWebViewJSContext */
       </script>
