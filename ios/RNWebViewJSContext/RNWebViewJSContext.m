@@ -131,12 +131,13 @@ RCT_REMAP_METHOD(evaluateScript, evaluateScriptInContext:(nonnull NSNumber *)con
     };
 
     context[rejectName] = ^(JSValue *val) {
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: [val toString] };
+        NSString *description = [val toString];
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: description };
         NSError *error = [NSError errorWithDomain:@"JSWebViewManagerErrorDomain"
                                              code:-57
                                          userInfo:userInfo];
 
-        reject(@"-57", error.domain, error);
+        reject(@"-57", description, error);
     };
 
     return @{@"resolveName": resolveName, @"rejectName": rejectName};
