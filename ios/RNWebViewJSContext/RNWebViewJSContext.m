@@ -57,9 +57,9 @@ RCT_EXPORT_METHOD(destroy:(nonnull NSNumber *)contextID)
 
 RCT_EXPORT_METHOD(loadHTML:(NSString *)htmlString resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    
+
     NSUInteger hash = [htmlString hash];
-    
+
     __weak RNWebViewJSContext *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         __strong RNWebViewJSContext *strongSelf = weakSelf;
@@ -68,15 +68,15 @@ RCT_EXPORT_METHOD(loadHTML:(NSString *)htmlString resolver:(RCTPromiseResolveBlo
             webView = [[UIWebView alloc] initWithFrame:CGRectZero];
             strongSelf.webViews[@(hash)] = webView;
         }
-        
+
         JSContext *context = [webView JSContext];
-        
+
         RCTPromiseResolveBlock resolveWrapper = ^(id obj) {
             resolve(@(hash));
         };
-        
+
         [self generateCallbacksInContext:context resolver:resolveWrapper rejecter:reject UUIDSuffix:false];
-        
+
         __weak UIWebView *weakWebView = webView;
         dispatch_async(dispatch_get_main_queue(), ^{
             __strong UIWebView *strongWebView = weakWebView;
@@ -87,7 +87,7 @@ RCT_EXPORT_METHOD(loadHTML:(NSString *)htmlString resolver:(RCTPromiseResolveBlo
 
 RCT_REMAP_METHOD(loadModule, loadModuleInContext:(nonnull NSNumber *)contextID script:(NSString *)script resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    
+
 }
 
 
@@ -96,9 +96,9 @@ RCT_REMAP_METHOD(evaluateScript, evaluateScriptInContext:(nonnull NSNumber *)con
     UIWebView *webView = self.webViews[contextID];
     NSAssert(webView, @"WebView was nil!");
     JSContext *context = [webView JSContext];
-    
+
     NSDictionary *callbacks = [self generateCallbacksInContext:context resolver:resolve rejecter:reject UUIDSuffix:true];
-    
+
     NSString *jsWrapper = [NSString stringWithFormat:@"\
                            setTimeout(function(){ \
                            var resolve = %@, reject = %@; \
@@ -108,37 +108,37 @@ RCT_REMAP_METHOD(evaluateScript, evaluateScriptInContext:(nonnull NSNumber *)con
                            reject(e); \
                            } \
                            }, 0)", callbacks[@"resolveName"], callbacks[@"rejectName"], script];
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [context evaluateScript:jsWrapper];
     });
-    
+
 }
 
 
 - (NSDictionary *)generateCallbacksInContext:(JSContext *)context resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject UUIDSuffix:(BOOL)withSuffix {
     NSString *resolveName = @"resolve";
     NSString *rejectName = @"reject";
-    
+
     if (withSuffix) {
         NSString *uniquePrefix = [[NSUUID UUID].UUIDString substringToIndex:7];
         resolveName = [NSString stringWithFormat:@"resolve_%@", uniquePrefix];
         rejectName = [NSString stringWithFormat:@"reject_%@", uniquePrefix];
     }
-    
+
     context[resolveName] = ^(JSValue *val) {
         resolve([val toString]);
     };
-    
+
     context[rejectName] = ^(JSValue *val) {
         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: [val toString] };
         NSError *error = [NSError errorWithDomain:@"JSWebViewManagerErrorDomain"
                                              code:-57
                                          userInfo:userInfo];
-        
-        reject(error);
+
+        reject(@"-57", error.domain, error);
     };
-    
+
     return @{@"resolveName": resolveName, @"rejectName": rejectName};
 }
 
