@@ -1,7 +1,0 @@
-{
-  "whitelist": [
-    "es7.classProperties",
-    "es6.constants",
-    "es6.modules"
-  ]
-}
