@@ -154,6 +154,12 @@ public class RNWebViewJSContextModule extends ReactContextBaseJavaModule {
         mainHandler.post(myRunnable);
     }
 
+    @ReactMethod
+    public void destroy(Integer contextID) {
+      mWebViews.delete(contextID);
+    }
+
+
     @SuppressLint("SetJavaScriptEnabled")
     private WebView createWebView(Integer contextID) {
 
