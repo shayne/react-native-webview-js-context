@@ -221,8 +221,8 @@ public class RNWebViewJSContextModule extends ReactContextBaseJavaModule {
 
         webView.evaluateJavascript(
                 "(function($w){" +
-                        "$w.resolve = $RNWebViewJSContext.global_resolver;" +
-                        "$w.reject = $RNWebViewJSContext.global_rejecter;" +
+                        "$w.resolve = $RNWebViewJSContext.global_resolver.bind($RNWebViewJSContext);" +
+                        "$w.reject = $RNWebViewJSContext.global_rejecter.bind($RNWebViewJSContext);" +
                         "})(window);", null);
 
 
