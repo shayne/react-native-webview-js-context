@@ -49,7 +49,7 @@ RCT_EXPORT_MODULE()
 }
 
 
-RCT_EXPORT_METHOD(destroy:(nonnull NSNumber *)contextID)
+RCT_EXPORT_METHOD(destroy:(nonnull NSString *)contextID)
 {
     [self.webViews removeObjectForKey:contextID];
 }
@@ -58,21 +58,21 @@ RCT_EXPORT_METHOD(destroy:(nonnull NSNumber *)contextID)
 RCT_EXPORT_METHOD(loadHTML:(NSString *)htmlString resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
 
-    NSUInteger hash = [htmlString hash];
+    NSString *hash = [NSString stringWithFormat:@"%lu", [htmlString hash]];
 
     __weak RNWebViewJSContext *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         __strong RNWebViewJSContext *strongSelf = weakSelf;
-        UIWebView *webView = self.webViews[@(hash)];
+        UIWebView *webView = self.webViews[hash];
         if (!webView) {
             webView = [[UIWebView alloc] initWithFrame:CGRectZero];
-            strongSelf.webViews[@(hash)] = webView;
+            strongSelf.webViews[hash] = webView;
         }
 
         JSContext *context = [webView JSContext];
 
         RCTPromiseResolveBlock resolveWrapper = ^(id obj) {
-            resolve(@(hash));
+            resolve(hash);
         };
 
         [self generateCallbacksInContext:context resolver:resolveWrapper rejecter:reject UUIDSuffix:false];
@@ -85,13 +85,13 @@ RCT_EXPORT_METHOD(loadHTML:(NSString *)htmlString resolver:(RCTPromiseResolveBlo
     });
 }
 
-RCT_REMAP_METHOD(loadModule, loadModuleInContext:(nonnull NSNumber *)contextID script:(NSString *)script resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_REMAP_METHOD(loadModule, loadModuleInContext:(nonnull NSString *)contextID script:(NSString *)script resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
 
 }
 
 
-RCT_REMAP_METHOD(evaluateScript, evaluateScriptInContext:(nonnull NSNumber *)contextID script:(NSString *)script resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_REMAP_METHOD(evaluateScript, evaluateScriptInContext:(nonnull NSString *)contextID script:(NSString *)script resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     UIWebView *webView = self.webViews[contextID];
     NSAssert(webView, @"WebView was nil!");
